@@ -1,3 +1,6 @@
+#ifndef GAME_H
+#define GAME_H
+
 class Game {
     private:
         //...
@@ -12,3 +15,5 @@ class Game {
         void Render();
         void Destroy();
 };
+
+#endif
