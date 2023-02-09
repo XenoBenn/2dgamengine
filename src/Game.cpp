@@ -1,10 +1,11 @@
 #include "Game.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 
 Game::Game(){
     isRunning = false;
-    std::cout << "Game contructor called!" << std::endl;
+    std::cout << "Game constructor called!" << std::endl;
 }
 
 Game::~Game(){
@@ -59,20 +60,33 @@ void Game::ProcessInput(){
     }
 }
 
-void Game::Update(){
+void Game::Setup(){
+    //TODO: Initialize game objects...
+}
 
+void Game::Update(){
+    //TODO: Update game objects...
 }
 
 void Game::Render(){
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
     SDL_RenderClear(renderer);
 
-    //TODO: render game objects here
+    // Draw png texture
+    SDL_Surface* surface = IMG_Load("./assets/images/tank-tiger-right.png");
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    //What is the destination rectangle that we want to place our texture
+    SDL_Rect dstRect = { 10, 10, 32, 32};
+    SDL_RenderCopy(renderer, texture, NULL, &dstRect); //Using the whole image onto the renderer
+    SDL_DestroyTexture(texture); //Free up the texture
 
     SDL_RenderPresent(renderer);
 }
 
 void Game::Run(){
+    Setup();
     while (isRunning)
     {
         ProcessInput();
