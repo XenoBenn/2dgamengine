@@ -12,7 +12,7 @@ Game::~Game(){
 
 void Game::Initialize(){
     if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 ){
-        std::cout << "Error initializing SDL." << std::endl;
+        std::cerr << "Error initializing SDL." << std::endl;
         return; //Give an error if it couldn't initialize
     }
     SDL_Window* window = SDL_CreateWindow(
@@ -24,12 +24,12 @@ void Game::Initialize(){
         SDL_WINDOW_BORDERLESS    
     );
     if (!window){
-        std::cout << "Error creating SDL window." << std::endl;
+        std::cerr << "Error creating SDL window." << std::endl;
         return;
     }
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
     if (!renderer){
-        std::cout << "Error creating SDL renderer" << std::endl;
+        std::cerr << "Error creating SDL renderer" << std::endl;
     }
 }
 
