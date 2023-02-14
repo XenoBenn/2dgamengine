@@ -1,20 +1,76 @@
 #ifndef ECS_H
 #define ECS_H
 
-class Component {
-    //TODO
+#include <bitset>
+#include <vector>
+
+const unsigned int MAX_COMPONENTS = 32;
+
+///////////////////////////////////////////////////////////////////
+// Signature
+///////////////////////////////////////////////////////////////////
+// We use a bitset (1s and 0s) to keep track of which components an entity has,
+// and also helps keep track of which entities a system is interested in
+///////////////////////////////////////////////////////////////////
+typedef std::bitset<MAX_COMPONENTS> Signature;
+
+struct IComponent {
+    protected:
+        static int nextId;
 };
 
-class Entitry {
-    //TODO
+// Used to assign a uinique id to a component type
+template <typename T>
+class Component: public IComponent {
+    // Returns the uniqe id of Component<T>
+    static int GetId() {
+        static auto id = nextId++;
+        return id;
+    }
 };
+
+class Entity {
+    private:
+        int id;
+
+    public:
+        Entity(int id): id(id) {};
+        int GetId() const;
+};
+
+///////////////////////////////////////////////////////////////////
+// System
+///////////////////////////////////////////////////////////////////
+// The system processes entitites that contain a specific signature
+///////////////////////////////////////////////////////////////////
 
 class System {
-    //TODO
+    private:
+        Signature componentSignature;
+        std::vector<Entity> entities;
+
+    public:
+        System() = default;
+        ~System() = default;
+
+        void AddEntityToSystem(Entity entity);
+        void RemoveEntityFromSystem(Entity entity);
+        std::vector<Entity> GetSystemEntites() const;
+        Signature& GetComponentSignature() const;
+
+        //Defines the component type that entitiies must have to be considered by the system
+        template <typename TComponent> void RequireComponent();
+
 };
 
 class Registry {
     //TODO
 };
+
+template <typename TComponent>
+void System::RequireComponent() {
+    const auto componentId = Component<TComponent>::GetId();
+    componentSignature.set(componentId);
+}
 
 #endif
