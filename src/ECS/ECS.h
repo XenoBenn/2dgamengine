@@ -178,7 +178,7 @@ class Registry {
 
         // Checks the component signature of an entity and add the entity to the
         // systems that are interested in it
-        void AddEntityToSystem(Entity entity);
+        void AddEntityToSystems(Entity entity);
         
 };
 

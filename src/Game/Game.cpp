@@ -4,10 +4,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include <glm/glm.hpp>
+#include <glm/glm.hpp> ///home/xenoben/repos/pikuma/2dgamengine/libs/glm/glm.hpp
 
 Game::Game(){
     isRunning = false;
+    registry = new Registry();
     Logger::Log("Game constructor called!");
 }
 
@@ -66,12 +67,8 @@ void Game::ProcessInput(){
 
 
 void Game::Setup(){
-    //TODO:
-    //Entity tank  = registry.CreateEntity();
-    //tank.AddComponent<TransformComponent>();
-    //tank.AddComponent<BoxCollider>();
-    //tank.AddComponent<SpriteComponent>("./asssets/images/tank.png");
-
+    Entity tank = registry->CreateEntity();
+    Entity truck = registry->CreateEntity();
 }
 
 void Game::Update(){
