@@ -163,8 +163,11 @@ class Registry {
         // Entity management
         Entity CreateEntity();
 
-        //Component management
+        // Component management
+        // Add component
         template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);
+        template <typename TComponent> void RemoveComponent(Entity entity);
+        template <typename TComponent> bool HasComponent(Entity entity) const;
 
         // TODO: void AddEntityToSystem(Entity entity);
         
@@ -181,7 +184,7 @@ void Registry::AddComponent(Entity entity, TArgs&& ...args) {
     const auto componentId = Component<TComponent>::GetId();
     const auto entityId = entity.GetId();
 
-    if (componentId >= componentPools.size=())
+    if (componentId >= componentPools.size())
     {
         componentPools.resize(componentId + 1, nullptr); 
     }
@@ -202,8 +205,26 @@ void Registry::AddComponent(Entity entity, TArgs&& ...args) {
     TComponent newComponent(std::forward<TArgs>(args)...);
 
     componentPool->Set(entityId, newComponent);
-    
-    entityComponentSignatures[entity].set(componentId);
+
+    entityComponentSignatures[entityId].set(componentId);
 }
+
+template <typename TComponent>
+void Registry::RemoveComponent(Entity entity) {
+    const auto componentId = Component<TComponent>::GetId();
+    const auto entityId = entity.GetId();
+
+    entityComponentSignatures[entityId].set(componentId, false);
+}
+
+template <typename TComponent>
+bool Registry::HasComponent(Entity entity) const {
+    const auto componentId = Component<TComponent>::GetId();
+    const auto entityId = entity.GetId();
+
+    return entityComponentSignatures[entityId].test(componentId);
+
+}
+
 
 #endif
