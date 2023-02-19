@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "../Logger/Logger.h"
 #include "../ECS/ECS.h"
+#include "../Components/TransformComponent.h"
+#include "../Components/RigidBodyComponent.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
@@ -67,10 +69,13 @@ void Game::ProcessInput(){
 
 
 void Game::Setup(){
+    // Create an entity
     Entity tank = registry->CreateEntity();
-    Entity truck = registry->CreateEntity();
-}
 
+    // Add some components to that entity
+    registry->AddComponent<TransformComponent>(tank, glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0);
+    registry->AddComponent<RigidBodyComponent>(tank, glm::vec2(50.0, 0.0));
+}
 void Game::Update(){
     //Update game objects...
     //If we are too fast, waste some time until we reach the MILLISECS_PER_FRAME
